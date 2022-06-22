@@ -1,0 +1,120 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>サーチ</title>
+        <link rel="stylesheet" href="/css/style.css">
+    </head>
+
+    <body>
+        <%- include('header'); %>
+        <form action="/index" method="post">
+            <div class="num-form">
+                <ul>
+                <%
+                const numLength = 5;
+                for(let i = 1 ; i <= numLength ; i++)
+                {
+                    %>
+                    <li><input type="number" name="num<%= i %>" placeholder="num<%= i %>" required></li>
+                    <input type="hidden" name="numLength" value="<%=numLength%>">
+                    <%
+                } %>
+                </ul>
+            </div>
+            <div class="searchNumber">
+                <span>検索対象: </span>
+                <input type="number" name="searchNumber" required>
+            </div>
+
+            <select name="searchselect">
+                <%
+                let count = 0;
+                searchMethodArray.forEach((searchMethod) =>
+                {
+                    if(locals.selectedNum == count)
+                    {
+                        %>
+                        <option value="<%= searchMethod %>" selected>
+                            <%= searchMethod %>
+                        </option>
+                        <%
+                    }
+                    else
+                    {
+                        %>
+                        <option value="<%= searchMethod %>">
+                            <%= searchMethod %>
+                        </option>
+                        <%
+                    }
+                    count++;
+                });
+                %>
+            </select>
+
+            <input type="submit" value="サーチ">
+        </form>
+
+        <p>結果</p>
+        <div class="result-text">
+            <%
+            if(result.number < 0)
+            {
+                %>
+                見つかりませんでした
+                <%
+            }
+            else if(result.number === undefined)
+            {
+
+            }
+            else
+            {
+                %>
+                <%=result.number%>番目
+                
+                <%
+            }
+            %>
+
+            <ul>
+                <li>
+                    <%
+                    let leftArray = result.leftArray;
+                    if(leftArray === undefined || leftArray.length <= 0)
+                    {
+                        %>
+                        
+                        <%
+                    }
+                    else
+                    {
+                        %>
+                        <p>左側の配列</p>
+                        <%=leftArray%>
+                        <%
+                    }
+                    %>
+                </li>
+                <li>
+                    <%
+                    let rightArray = result.rightArray;
+                    if(rightArray === undefined || rightArray.length <= 0)
+                    {
+                        %>
+                        
+                        <%
+                    }
+                    else
+                    {
+                        %>
+                        <p>右側の配列</p>
+                        <%=rightArray%>
+                        <%
+                    }
+                    %>
+                </li>
+            </ul>
+        </div>
+    </body>
+</html>
